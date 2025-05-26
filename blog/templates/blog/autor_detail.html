@@ -1,0 +1,44 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ autor.nom }} {{ autor.cognom }}{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h1 class="titol">Detalls de l'Autor</h1>
+    <div class="autor-info">
+        <p><strong>Nom:</strong> {{ autor.nom }}</p>
+        <p><strong>Cognom:</strong> {{ autor.cognom }}</p>
+        <p><strong>Email:</strong> {{ autor.email }}</p>
+    </div>
+    <h2>Posts Publicats</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Títol</th>
+                <th>Data de Publicació</th>
+                <th>Tags</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for post in autor.posts.all %}
+                <tr>
+                    <td><a href="{% url 'posts-detail-page' post.slug %}">{{ post.title }}</a></td>
+                    <td>{{ post.date }}</td>
+                    <td>
+                        {% for tag in post.tags.all %}
+                            {{ tag.nom }}{% if not forloop.last %}, {% endif %}
+                        {% empty %}
+                            Sense tags
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3">Aquest autor no ha publicat cap post.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p><a href="{% url 'autor_list' %}">Tornar a la llista d'autors</a></p>
+</div>
+{% endblock %}

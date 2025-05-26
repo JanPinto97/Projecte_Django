@@ -1,0 +1,25 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Posts{% endblock %}
+
+{% block content %}
+
+<div class="text-center">
+    <h1 class="titol">Posts</h1>
+    <h2>Llistat de tots els Posts</h2>
+    <div class="posts-container">
+        {% for post in posts %}
+            <div class="card">
+                <img src="../../static/blog/images/boli.png" alt="Imatge del post">
+                <h3>{{ post.title }}</h3>
+                <p>{{ post.content|truncatewords:10 }}</p>
+                <p><small>Autor: {{ post.autor.nom }} {{ post.autor.cognom }}</small></p>
+                <a href="{% url 'posts-detail-page' post.slug %}" class="button">Llegir</a>
+            </div>
+        {% empty %}
+            <p>No hi ha posts encara.</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

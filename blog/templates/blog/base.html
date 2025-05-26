@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Blog M3-UF6-DJANGO{% endblock %}</title>
+    <link rel="stylesheet" href="../../static/blog/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="capçalera">
+            <ul class="menu">
+                <li><a href="{% url 'index' %}">INICI</a></li>
+                <li><a href="{% url 'post-list-page' %}">POSTS</a></li>
+                <li><a href="{% url 'autor_list' %}">AUTORS</a></li>
+                <li><a href="{% url 'tag_list' %}">TAGS</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+    <footer>
+        <p class="text_base">&copy Copyright: Jan Pinto 2025</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Llista de Tags{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h1 class="titol">Llista d'Etiquetes</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Tag</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tag in tags %}
+                <tr>
+                    <td><a href="{% url 'tag_detail' tag.slug %}">{{ tag.nom }}</a></td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td>No hi ha tags disponibles.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

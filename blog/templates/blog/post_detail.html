@@ -1,0 +1,21 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<div class="post">
+    <h1 class="titol">{{ post.title }}</h1>
+    <p><strong>Data de publicació:</strong> {{ post.date }}</p>
+    <img src="../../static/blog/images/bloc.png" id="img_post" alt="Portada del blog">
+    <p><strong>Autor:</strong> {{ post.autor.nom }} {{ post.autor.cognom }}</p>
+    <p>{{ post.content }}</p>
+    <p><strong>Tags:</strong> 
+        {% for tag in post.tags.all %}
+            {{ tag.nom }}{% if not forloop.last %}, {% endif %}
+        {% empty %}
+            Sense tags
+        {% endfor %}
+    </p>
+    <a href="{% url 'post-list-page' %}">Tornar a la llista de posts</a>
+</div>
+{% endblock %}
