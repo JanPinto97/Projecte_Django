@@ -36,7 +36,7 @@ python manage.py runserver
 ```sh
 127.0.0.1:8000
   ```
-<br>
+
 # PYDOC
 
 Documentació de models.py
