@@ -1,21 +1,19 @@
 name: Django CI - Migrations and Documentation
 
-# Quan s'executarà el workflow
 on:
   push:
-    branches: [ main ]  # Executa el workflow quan es fa push a la branca 'main'
+    branches: [ main ]
   pull_request:
-    branches: [ main ]  # Executa el workflow quan es crea un PR cap a 'main'
+    branches: [ main ]
 
-# Tasques a executar
 jobs:
   build:
-    runs-on: ubuntu-latest  # Executa el workflow en una màquina Ubuntu
+    runs-on: ubuntu-latest
 
     steps:
     # 1. Clona el codi del repositori
     - name: Checkout code
-      uses: actions/checkout@v4  # Aquesta acció clona el repositori
+      uses: actions/checkout@v4
 
     # 2. Instal·la Python 3.11
     - name: Set up Python 3.11
@@ -27,22 +25,28 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install django  # Instal·la Django
-        # Si tens un fitxer requirements.txt, pots fer:
-        # pip install -r requirements.txt
+        pip install django
 
     # 4. Executa les migracions
     - name: Run migrations
       run: |
         python manage.py makemigrations --noinput
         python manage.py migrate --noinput
+      env:
+        DJANGO_SETTINGS_MODULE: Projecte_Django.settings  # Defineix la variable d'entorn per a les migracions
 
     # 5. Genera documentació per a blog/views.py amb pydoc
     - name: Generate documentation for views.py
       run: |
-        python -m pydoc -w ./blog/views.py  # Genera views.html a l'arrel
+        export PYTHONPATH=$PYTHONPATH:$(pwd)
+        python -m pydoc -w blog.views  # Genera views.html a l'arrel
+      env:
+        DJANGO_SETTINGS_MODULE: Projecte_Django.settings  # Defineix la variable d'entorn per a pydoc
 
     # 6. Genera documentació per a blog/models.py amb pydoc
     - name: Generate documentation for models.py
       run: |
-        python -m pydoc -w ./blog/models.py  # Genera models.html a l'arrel
+        export PYTHONPATH=$PYTHONPATH:$(pwd)
+        python -m pydoc -w blog.models  # Genera models.html a l'arrel
+      env:
+        DJANGO_SETTINGS_MODULE: Projecte_Django.settings  # Defineix la variable d'entorn per a pydoc
