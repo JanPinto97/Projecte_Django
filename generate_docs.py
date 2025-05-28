@@ -7,7 +7,7 @@ import pydoc
 os.environ['PYTHONPATH'] = os.environ.get('PYTHONPATH', '') + os.pathsep + os.path.abspath(os.getcwd())
 
 # Configura Django
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'blog_project.settings')  # Canvia 'blog_project' pel nom del teu projecte
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'my_site.settings')  # Canvia 'blog_project' pel nom del teu projecte
 django.setup()  # Inicialitza Django
 
 # Genera la documentació amb pydoc
