@@ -33,7 +33,7 @@ jobs:
         python manage.py makemigrations --noinput
         python manage.py migrate --noinput
       env:
-        DJANGO_SETTINGS_MODULE: blog.settings
+        DJANGO_SETTINGS_MODULE: my_site.settings
 
     # 5. Genera documentació amb el script personalitzat
     - name: Generate documentation using custom script
