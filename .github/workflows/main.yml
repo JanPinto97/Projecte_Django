@@ -50,7 +50,7 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE  # Canvia al directori arrel del repositori
         export PYTHONPATH=$PYTHONPATH:$GITHUB_WORKSPACE
-        python -c "import os; import django; os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'my_site.settings'); django.setup(); import pydoc; pydoc.writedoc('blog.views'); print('views.html generated at:', os.path.abspath('views.html'))"
+        python -c "import os; import django; os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'my_site.settings'); django.setup(); import pydoc; pydoc.writedoc('blog.views'); print('blog.views.html generated at:', os.path.abspath('blog.views.html'))"
       env:
         DJANGO_SETTINGS_MODULE: my_site.settings
       continue-on-error: true
@@ -60,18 +60,24 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE  # Canvia al directori arrel del repositori
         export PYTHONPATH=$PYTHONPATH:$GITHUB_WORKSPACE
-        python -c "import os; import django; os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'my_site.settings'); django.setup(); import pydoc; pydoc.writedoc('blog.models'); print('models.html generated at:', os.path.abspath('models.html'))"
+        python -c "import os; import django; os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'my_site.settings'); django.setup(); import pydoc; pydoc.writedoc('blog.models'); print('blog.models.html generated at:', os.path.abspath('blog.models.html'))"
       env:
         DJANGO_SETTINGS_MODULE: my_site.settings
       continue-on-error: true
 
-    # 8. Mostra el contingut del directori després de generar la documentació
-    - name: List directory after generating documentation
+    # 8. Renombra els fitxers generats
+    - name: Rename generated documentation files
+      run: |
+        [ -f blog.views.html ] && mv blog.views.html views.html || echo "blog.views.html not found, skipping rename"
+        [ -f blog.models.html ] && mv blog.models.html models.html || echo "blog.models.html not found, skipping rename"
+
+    # 9. Mostra el contingut del directori després de generar i renombrar la documentació
+    - name: List directory after renaming documentation
       run: |
         pwd  # Mostra el directori de treball actual
         ls -la
 
-    # 9. Commit i push dels fitxers generats
+    # 10. Commit i push dels fitxers generats
     - name: Commit and push documentation files
       run: |
         git config --global user.name 'GitHub Actions'
