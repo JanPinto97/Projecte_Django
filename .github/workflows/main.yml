@@ -33,7 +33,7 @@ jobs:
         python manage.py makemigrations --noinput
         python manage.py migrate --noinput
       env:
-        DJANGO_SETTINGS_MODULE: blog.settings  # Defineix la variable d'entorn per a les migracions
+        DJANGO_SETTINGS_MODULE: my_site.settings  # Defineix la variable d'entorn per a les migracions
 
     # 5. Genera documentació per a blog/views.py amb pydoc
     - name: Generate documentation for views.py
@@ -41,7 +41,7 @@ jobs:
         export PYTHONPATH=$PYTHONPATH:$(pwd)
         python -m pydoc -w blog.views  # Genera views.html a l'arrel
       env:
-        DJANGO_SETTINGS_MODULE: blog.settings  # Defineix la variable d'entorn per a pydoc
+        DJANGO_SETTINGS_MODULE: my_site.settings  # Defineix la variable d'entorn per a pydoc
 
     # 6. Genera documentació per a blog/models.py amb pydoc
     - name: Generate documentation for models.py
@@ -49,4 +49,4 @@ jobs:
         export PYTHONPATH=$PYTHONPATH:$(pwd)
         python -m pydoc -w blog.models  # Genera models.html a l'arrel
       env:
-        DJANGO_SETTINGS_MODULE: blog.settings  # Defineix la variable d'entorn per a pydoc
+        DJANGO_SETTINGS_MODULE: my_site.settings  # Defineix la variable d'entorn per a pydoc
