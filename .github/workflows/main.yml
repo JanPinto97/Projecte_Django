@@ -1,4 +1,4 @@
-name: Django CI - Migrations
+name: Django CI - Migrations and Documentation
 
 # Quan s'executarà el workflow
 on:
@@ -36,3 +36,13 @@ jobs:
       run: |
         python manage.py makemigrations --noinput
         python manage.py migrate --noinput
+
+    # 5. Genera documentació per a blog/views.py amb pydoc
+    - name: Generate documentation for views.py
+      run: |
+        python -m pydoc -w ./blog/views.py  # Genera views.html a l'arrel
+
+    # 6. Genera documentació per a blog/models.py amb pydoc
+    - name: Generate documentation for models.py
+      run: |
+        python -m pydoc -w ./blog/models.py  # Genera models.html a l'arrel
