@@ -37,6 +37,17 @@ python manage.py runserver
 127.0.0.1:8000
   ```
 <br>
+# PYDOC
+
+Documentació de models.py
+```sh
+https://htmlpreview.github.io/?https://github.com/JanPinto97/Projecte_Django/blob/main/models.html
+  ```
+
+Documentació de views.py
+```sh
+https://htmlpreview.github.io/?https://github.com/JanPinto97/Projecte_Django/blob/main/views.html
+  ```
 
 
 
