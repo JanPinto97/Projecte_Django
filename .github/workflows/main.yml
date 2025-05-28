@@ -9,7 +9,6 @@ on:
 # Defineix els permisos del workflow
 permissions:
   contents: write  # Permet escriure al repositori (per fer push)
-  pull-requests: write  # Permet crear pull requests (opcional, si vols crear un PR en lloc de fer push)
 
 jobs:
   build:
@@ -40,16 +39,17 @@ jobs:
       env:
         DJANGO_SETTINGS_MODULE: my_site.settings
 
-    # 5. Mostra el contingut del directori abans de generar la documentació
+    # 5. Mostra el directori de treball i el contingut abans de generar la documentació
     - name: List directory before generating documentation
       run: |
-        pwd
+        pwd  # Mostra el directori de treball actual
         ls -la
 
     # 6. Genera documentació per a blog/views.py amb pydoc
     - name: Generate documentation for views.py
       run: |
-        export PYTHONPATH=$PYTHONPATH:$(pwd)
+        cd $GITHUB_WORKSPACE  # Canvia al directori arrel del repositori
+        export PYTHONPATH=$PYTHONPATH:$GITHUB_WORKSPACE
         python -c "import os; import django; os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'my_site.settings'); django.setup(); import pydoc; pydoc.writedoc('blog.views'); print('views.html generated at:', os.path.abspath('views.html'))"
       env:
         DJANGO_SETTINGS_MODULE: my_site.settings
@@ -58,7 +58,8 @@ jobs:
     # 7. Genera documentació per a blog/models.py amb pydoc
     - name: Generate documentation for models.py
       run: |
-        export PYTHONPATH=$PYTHONPATH:$(pwd)
+        cd $GITHUB_WORKSPACE  # Canvia al directori arrel del repositori
+        export PYTHONPATH=$PYTHONPATH:$GITHUB_WORKSPACE
         python -c "import os; import django; os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'my_site.settings'); django.setup(); import pydoc; pydoc.writedoc('blog.models'); print('models.html generated at:', os.path.abspath('models.html'))"
       env:
         DJANGO_SETTINGS_MODULE: my_site.settings
@@ -67,22 +68,19 @@ jobs:
     # 8. Mostra el contingut del directori després de generar la documentació
     - name: List directory after generating documentation
       run: |
-        pwd
+        pwd  # Mostra el directori de treball actual
         ls -la
 
-    # 9. Commit i crea un pull request amb els fitxers generats
-    - name: Create Pull Request with documentation files
+    # 9. Commit i push dels fitxers generats
+    - name: Commit and push documentation files
       run: |
         git config --global user.name 'GitHub Actions'
         git config --global user.email 'actions@github.com'
         # Afegeix els fitxers només si existeixen
         [ -f views.html ] && git add views.html || echo "views.html not found, skipping"
         [ -f models.html ] && git add models.html || echo "models.html not found, skipping"
-        # Crea una nova branca i fa commit si hi ha canvis
-        git checkout -b update-pydoc-docs-$(date +%s)
+        # Només fa commit si hi ha canvis
         git diff --staged --quiet || git commit -m "Update pydoc documentation files (views.html and models.html)"
-        git push origin HEAD
-        # Crea un pull request
-        gh pr create --title "Update pydoc documentation" --body "Automated update of pydoc documentation files (views.html and models.html)" --base main
+        git push
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
